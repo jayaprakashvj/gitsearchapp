@@ -1,0 +1,89 @@
+<div class="container">
+    <div class="row mt-5">
+        <div class="col-12 ">
+            <h3>Github search APP</h3>
+        </div>
+    </div>
+    <form  [formGroup]="searchForm" (ngSubmit)="submitForm()">
+        <div class="row mt-1">
+            <div class="col-6">
+                <input type="text" class="form-control"  formControlName="searchString">
+            </div>
+            <div class="col-6">
+                <input type="submit" value="search" class="btn btn-primary">
+            </div>
+        </div>
+    </form>
+
+   
+
+    <ng-container *ngIf="gitHubSearchResult.length>0">
+
+        <div class="row mt-3" >
+            <div class="col-12">
+                <h2>{{gitHubSearchResult[0].owner.login}} Github contribution chart</h2>
+            </div>
+            <div class="col-12">
+                <img src="https://ghchart.rshah.org/{{gitHubSearchResult[0].owner.login}}" alt="{{gitHubSearchResult[0].owner.login}}'s Github chart" />
+            </div>
+        </div>
+
+        <div class="row mt-3">
+            <div class="col-12">
+                <h3>{{gitHubSearchResult[0].owner.login}} Github Repository List</h3>
+               
+            </div>
+            <div class="col-6">
+                <select class="form-control" [(ngModel)]="selrepoUrl">
+                    <option value="">Select Repository</option>
+                    <ng-container *ngFor="let repository of gitHubSearchResult;let i=index">
+                        <option [value]="i">{{repository.name}}</option>
+                    </ng-container>
+                </select>
+            </div>
+            <div class="col-6">
+                <input type="button" value="Copy git RepositoryURL" class="btn btn-success" (click)="copyGitUrl()" />
+            </div>
+
+        </div>
+
+        <div class="row" *ngIf="selrepoUrl>=0">
+            <div class="col-12">
+                <h3 >{{gitHubSearchResult[selrepoUrl].name}} branches</h3>                
+            </div>
+            <div class="col-12">               
+                <div class="accordion" id="accordionExample">
+
+                    <ng-container *ngFor="let branch of userRepoBranchList;let i=index">
+                       
+
+                        <div class="card">
+                            <div class="card-header" id="headingOne">
+                              <h2 class="mb-0">
+                                <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                                    {{branch.name}}
+                                </button>
+                              </h2>
+                            </div>
+                        
+                            <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+                              <div class="card-body">
+                               
+                              </div>
+                            </div>
+                          </div>
+                    </ng-container>
+                
+                   
+                  </div>
+            </div>
+        </div>
+    </ng-container>
+
+    <ng-container *ngIf="searchStatus && gitHubSearchResult.length<1">
+        <p>No result found</p>
+    </ng-container>
+
+    
+    
+<div>
