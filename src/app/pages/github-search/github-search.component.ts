@@ -31,6 +31,7 @@ export class GithubSearchComponent implements OnInit {
         (response)=>{
            this.gitHubSearchResult = response;
            this.searchStatus =true;
+           this.selrepoUrl=-1;
            
         },
         (error)=>{
